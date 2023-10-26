@@ -11,3 +11,13 @@ class User(models.Model):
     class Meta:
         db_table = "User"
         managed = True
+
+class Task(models.Model):
+    _id = models.ObjectIdField()
+    username = models.CharField(max_length=30)
+    description = models.CharField(max_length=30)
+    priority = models.CharField(max_length=10)
+
+    class Meta:
+        db_table = "Task"
+        managed = True
