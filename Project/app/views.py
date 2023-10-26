@@ -10,22 +10,20 @@ class TestView(APIView):
 
 
 
-import pymongo
+# import pymongo
 
-client = pymongo.MongoClient('mongodb+srv://mozzam:mozzam@latestcluster.wdjuvrc.mongodb.net/')
-dbname = client['Django']
+# client = pymongo.MongoClient('mongodb+srv://mozzam:mozzam@latestcluster.wdjuvrc.mongodb.net/')
+# dbname = client['Django_API']
 
-#Define Collection
-collection = dbname['mascot']
+# #Define Collection
+# Usercollection = dbname['User']
+# collection = dbname['Task']
 
-mascot_1={
-    "name": "Sammy",
-    "type" : "Shark"
-}
+# User_1={
+#     "name": "Sammy",
+#     "type" : "Shark"
+# }
 
-collection.insert_one(mascot_1)
+# collection.insert_one(User_1)
 
-mascot_details = collection.find({})
-
-for r in mascot_details:
-    print(r['name'])
+# user_details = Usercollection.find({})
