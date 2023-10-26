@@ -74,3 +74,66 @@ class GetUserView(APIView):
             response['reason'] = str(e)
             response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
         return JsonResponse(response, status=response.get("httpstatus"))
+
+
+class CreateTaskView(APIView):
+    def post(self, request):
+        try:
+            response = {"status": "success", "data": "",
+                        "reason": "", "httpstatus":  HTTP_200_OK}
+
+            data = request.data
+            serializer = TaskSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                response['status'] = "success"
+                response["data"] = serializer.data
+                response['httpstatus'] = HTTP_201_CREATED
+            else:
+                print(serializer.error_messages)
+                response['status'] = "seriaerror"
+                response['reason'] = str(serializer.errors)
+                response['httpstatus'] = HTTP_400_BAD_REQUEST
+
+        except Exception as e:
+
+            response['status'] = 'error'
+            response['reason'] = str(e)
+            response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
+
+        return JsonResponse(response, status=response.get("httpstatus"))
+
+
+class GetAllTaskView(APIView):
+    def get(self, request):
+        try:
+            response = {"status": "success", "data": "",
+                        "reason": "", "httpstatus":  HTTP_200_OK}
+            queryset = Task.objects.all()
+            serializer = TaskSerializer(queryset, many=True)
+            response['status'] = "success"
+            response["data"] = serializer.data
+            response['httpstatus'] = HTTP_201_CREATED
+
+        except Exception as e:
+            response['status'] = 'error'
+            response['reason'] = str(e)
+            response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
+
+        return JsonResponse(response, status=response.get("httpstatus"))
+    
+
+class GetTaskView(APIView):
+    def get(self, request):
+        try:
+            response = {"status": "success", "data": "",
+                        "reason": "", "httpstatus":  HTTP_200_OK}
+            params = request.query_params
+            queryset = Task.objects.get(title=params.get('title'))
+        except Exception as e:
+            response['status'] = 'error'
+            response['reason'] = str(e)
+            response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
+
+        return JsonResponse(response, status=response.get("httpstatus"))
+

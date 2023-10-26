@@ -14,7 +14,7 @@ class User(models.Model):
 
 class Task(models.Model):
     _id = models.ObjectIdField()
-    username = models.CharField(max_length=30)
+    title = models.CharField(max_length=30)
     description = models.CharField(max_length=30)
     priority = models.CharField(max_length=10)
 
