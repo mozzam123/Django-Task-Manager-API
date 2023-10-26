@@ -12,6 +12,7 @@ from .serializers import *
 @method_decorator(csrf_exempt, name='dispatch')
 class CreateUserView(APIView):
     permission_classes = (AllowAny,)
+
     def post(self, request):
         try:
             response = {"status": "success", "data": "",
@@ -29,7 +30,7 @@ class CreateUserView(APIView):
                 response['reason'] = str(serializer.errors)
                 response['httpstatus'] = HTTP_400_BAD_REQUEST
         except Exception as e:
-            
+
             response['status'] = 'error'
             response['reason'] = str(e)
             response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
@@ -48,7 +49,26 @@ class GetAllUsersView(APIView):
             response["data"] = serializer.data
             response['httpstatus'] = HTTP_201_CREATED
 
-            
+        except Exception as e:
+            response['status'] = 'error'
+            response['reason'] = str(e)
+            response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
+        return JsonResponse(response, status=response.get("httpstatus"))
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GetUserView(APIView):
+    def get(self, request):
+        try:
+            response = {"status": "success", "data": "",
+                        "reason": "", "httpstatus":  HTTP_200_OK}
+            params = request.query_params
+            queryset = User.objects.get(username=params.get('username'))
+            serializer = UserSerializer(queryset)
+            response['status'] = "success"
+            response["data"] = serializer.data
+            response['httpstatus'] = HTTP_201_CREATED
+
         except Exception as e:
             response['status'] = 'error'
             response['reason'] = str(e)
