@@ -11,7 +11,7 @@ urlpatterns = [
     # Task
     path('api/v1/tasks/createtask', CreateTaskView.as_view()),
     path('api/v1/tasks/getalltask', GetAllTaskView.as_view()),
-    # path('api/v1/tasks/getalltask', GetAllTaskView.as_view()),
-
+    path('api/v1/tasks/gettask', GetTaskView.as_view()),
+    path('api/v1/tasks/deletetask', DeleteTaskView.as_view()),
 
 ]

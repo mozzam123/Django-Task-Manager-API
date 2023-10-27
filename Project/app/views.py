@@ -69,6 +69,11 @@ class GetUserView(APIView):
             response["data"] = serializer.data
             response['httpstatus'] = HTTP_201_CREATED
 
+        except User.DoesNotExist:
+            response['status'] = 'Failed'
+            response['reason'] = "User does not exist"
+            response["httpstatus"] = HTTP_404_NOT_FOUND
+
         except Exception as e:
             response['status'] = 'error'
             response['reason'] = str(e)
@@ -121,7 +126,7 @@ class GetAllTaskView(APIView):
             response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
 
         return JsonResponse(response, status=response.get("httpstatus"))
-    
+
 
 class GetTaskView(APIView):
     def get(self, request):
@@ -130,6 +135,17 @@ class GetTaskView(APIView):
                         "reason": "", "httpstatus":  HTTP_200_OK}
             params = request.query_params
             queryset = Task.objects.get(title=params.get('title'))
+            serializer = TaskSerializer(queryset)
+            if queryset:
+                response['status'] = "success"
+                response["data"] = serializer.data
+                response['httpstatus'] = HTTP_201_CREATED
+
+        except Task.DoesNotExist:
+            response['status'] = "Failed"
+            response["reason"] = "Task does not found"
+            response['httpstatus'] = HTTP_200_OK
+
         except Exception as e:
             response['status'] = 'error'
             response['reason'] = str(e)
@@ -137,3 +153,27 @@ class GetTaskView(APIView):
 
         return JsonResponse(response, status=response.get("httpstatus"))
 
+
+class DeleteTaskView(APIView):
+    def get(self, request):
+        try:
+            response = {"status": "success", "data": "",
+                        "reason": "", "httpstatus":  HTTP_200_OK}
+            params = request.query_params
+            queryset = Task.objects.get(title=params.get('title'))
+            queryset.delete()
+            response['status'] = "success"
+            response["data"] = "deleted succesfull"
+            response['httpstatus'] = HTTP_200_OK
+
+        except Task.DoesNotExist:
+            response['status'] = "Failed"
+            response["reason"] = "Task does not found"
+            response['httpstatus'] = HTTP_200_OK
+
+        except Exception as e:
+            response['status'] = 'error'
+            response['reason'] = str(e)
+            response["httpstatus"] = HTTP_500_INTERNAL_SERVER_ERROR
+
+        return JsonResponse(response, status=response.get("httpstatus"))
