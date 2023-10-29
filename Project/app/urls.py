@@ -4,14 +4,14 @@ from .views import *
 
 urlpatterns = [
     # Users
-    path('api/v1/users/register', CreateUserView.as_view()),
-    path('api/v1/users/getalluser', GetAllUsersView.as_view()),
-    path('api/v1/users', GetUserView.as_view()),
+    path('api/users/register', CreateUserView.as_view()),
+    path('api/users/getalluser', GetAllUsersView.as_view()),
+    path('api/users', GetUserView.as_view()),
 
     # Task
-    path('api/v1/tasks/createtask', CreateTaskView.as_view()),
-    path('api/v1/tasks/getalltask', GetAllTaskView.as_view()),
-    path('api/v1/tasks/gettask', GetTaskView.as_view()),
-    path('api/v1/tasks/deletetask', DeleteTaskView.as_view()),
+    path('api/tasks/createtask', CreateTaskView.as_view()),
+    path('api/tasks/getalltask', GetAllTaskView.as_view()),
+    path('api/tasks/gettask', GetTaskView.as_view()),
+    path('api/tasks/deletetask', DeleteTaskView.as_view()),
 
 ]
